@@ -1,367 +1,239 @@
-name: semantic
-description: 'The data model consists of three core tables: DIM_ARTICLE, which stores detailed information about the products being sold, including their name, category, brand, color, and price; DIM_CUSTOMER, which contains customer profiles with attributes like region, age, gender, and marketing segment; and FACT_SALES, which captures all sales transactions by linking customers to purchased articles, along with details such as sale date, quantity, total price, sales channel, and whether a promotion was applied. Together, these tables provide a comprehensive view of products, customers, and sales activity, enabling rich analysis across multiple dimensions.'
+name: structural_analysis
+description: 'The data model consists of a comprehensive structural analysis table: DIM_STRUCTURAL_ANALYSIS, which stores detailed stress analysis results from Autodesk Robot Structural Analysis. This table captures stress values at different members, nodes, and load cases, including maximum and minimum stress values (S_MAX_MPA, S_MIN_MPA), moment stresses in Y and Z directions (S_MAX_MY_MPA, S_MAX_MZ_MPA, S_MIN_MY_MPA, S_MIN_MZ_MPA), and axial force to area ratios (FX_AX_MPA). The data includes both basic load cases and load combinations, enabling comprehensive structural analysis, stress distribution evaluation, and identification of critical stress points in the structural system.'
+#test
 tables:
-  - name: DIM_ARTICLE
+  - name: DIM_STRUCTURAL_ANALYSIS
     base_table:
-      database: DASH_CORTEX_AGENTS_SUMMIT
+      database: SOPHIE_CORTEX_AGENTS_SUMMIT
       schema: PUBLIC
-      table: DIM_ARTICLE
+      table: DIM_STRUCTURAL_ANALYSIS
     dimensions:
-      - name: ARTICLE_NAME
-        expr: ARTICLE_NAME
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Mondracer Infant Bike
-          - Premium Bicycle
-          - The Ultimate Downhill Bike
-        description: The name of the article or product being sold, such as a specific type of bicycle.
-        synonyms:
-          - product_name
-          - item_name
-          - article_title
-          - product_title
-          - item_description
-          - product_description
-      - name: ARTICLE_CATEGORY
-        expr: ARTICLE_CATEGORY
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Bike
-          - Ski Boots
-          - Skis
-        description: The category of the article, such as Bike, Ski Boots, or Skis, which represents the type of product being sold or managed.
-        synonyms:
-          - article_type
-          - product_category
-          - item_group
-          - classification
-          - genre
-          - category_name
-          - product_class
-          - article_grouping
-      - name: ARTICLE_BRAND
-        expr: ARTICLE_BRAND
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Mondracer
-          - Veloci
-          - TDBootz
-        description: The brand name of the article, representing the manufacturer or label associated with the product.
-        synonyms:
-          - brand_name
-          - article_maker
-          - manufacturer
-          - product_brand
-          - item_brand
-          - article_label
-      - name: ARTICLE_COLOR
-        expr: ARTICLE_COLOR
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Red
-          - Blue
-          - Black
-        description: 'The color of the article, which can be one of the following: Red, Blue, or Black.'
-        synonyms:
-          - color
-          - hue
-          - shade
-          - tint
-          - article_hue
-          - product_color
-          - item_color
-          - article_shade
-    facts:
-      - name: ARTICLE_ID
-        expr: ARTICLE_ID
+      - name: MEMBER_ID
+        expr: MEMBER_ID
         data_type: NUMBER(38,0)
         sample_values:
           - '1'
           - '2'
           - '3'
-        description: Unique identifier for an article in the inventory.
-        synonyms:
-          - article_key
-          - product_id
-          - item_number
-          - product_code
-          - article_reference
-          - item_id
-      - name: ARTICLE_PRICE
-        expr: ARTICLE_PRICE
-        data_type: FLOAT
-        sample_values:
-          - '3000'
-          - '9000'
-          - '10000'
-        description: The price of an article, representing the monetary value assigned to a specific article or product.
-        synonyms:
-          - item_cost
-          - unit_price
-          - article_value
-          - product_price
-          - sale_price
-          - list_price
-          - retail_price
-    primary_key:
-      columns:
-        - ARTICLE_ID
-  - name: DIM_CUSTOMER
-    base_table:
-      database: DASH_CORTEX_AGENTS_SUMMIT
-      schema: PUBLIC
-      table: DIM_CUSTOMER
-    dimensions:
-      - name: CUSTOMER_NAME
-        expr: CUSTOMER_NAME
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Customer 0
-          - Customer 1
-          - Customer 2
-        description: The name of the customer, used to identify and distinguish between individual customers.
-        synonyms:
-          - customer_title
-          - client_name
-          - account_holder
-          - patron_name
-          - buyer_name
-          - client_title
-          - account_name
-      - name: CUSTOMER_REGION
-        expr: CUSTOMER_REGION
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - North
-          - South
-          - East
-        description: Geographic region where the customer is located.
-        synonyms:
-          - geographic_area
-          - customer_location
-          - region_code
-          - area_code
-          - territory
-          - customer_territory
-          - sales_region
-          - market_area
-      - name: CUSTOMER_GENDER
-        expr: CUSTOMER_GENDER
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Male
-          - Female
-        description: The gender of the customer, either Male or Female.
-        synonyms:
-          - sex
-          - gender_type
-          - customer_sex
-          - gender_category
-          - demographic_gender
-      - name: CUSTOMER_SEGMENT
-        expr: CUSTOMER_SEGMENT
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Premium
-          - Regular
-          - Occasional
-        description: 'The CUSTOMER_SEGMENT dimension categorizes customers based on their purchase behavior and loyalty, with three distinct segments: Premium (high-value, frequent customers), Regular (consistent, mid-value customers), and Occasional (infrequent, low-value customers).'
-        synonyms:
-          - customer_category
-          - customer_type
-          - customer_group
-          - client_segment
-          - patron_category
-          - demographic_segment
-          - market_segment
-    facts:
-      - name: CUSTOMER_ID
-        expr: CUSTOMER_ID
-        data_type: NUMBER(38,0)
-        sample_values:
-          - '0'
-          - '1'
-          - '2'
-        description: Unique identifier for each customer in the database.
-        synonyms:
-          - customer_key
-          - client_id
-          - account_number
-          - user_id
-          - patron_id
-          - subscriber_id
-          - client_identifier
-      - name: CUSTOMER_AGE
-        expr: CUSTOMER_AGE
-        data_type: NUMBER(38,0)
-        sample_values:
-          - '38'
-          - '23'
-          - '24'
-        description: The age of the customer at the time of data collection, representing the number of years since birth.
-        synonyms:
-          - age_of_customer
-          - customer_birth_year
-          - customer_dob
-          - customer_maturity
-          - years_old
-    primary_key:
-      columns:
-        - CUSTOMER_ID
-  - name: FACT_SALES
-    base_table:
-      database: DASH_CORTEX_AGENTS_SUMMIT
-      schema: PUBLIC
-      table: FACT_SALES
-    dimensions:
-      - name: SALES_CHANNEL
-        expr: SALES_CHANNEL
-        data_type: VARCHAR(16777216)
-        sample_values:
-          - Online
-          - In-Store
-          - Partner
-        description: The sales channel through which the sale was made, indicating whether the transaction occurred online, in a physical store, or through a business partner.
-        synonyms:
-          - sales_medium
-          - distribution_channel
-          - point_of_sale
-          - sales_medium_type
-          - sales_outlet
-          - sales_route
-          - sales_source
-      - name: PROMOTION_APPLIED
-        expr: PROMOTION_APPLIED
-        data_type: BOOLEAN
-        sample_values:
-          - 'TRUE'
-          - 'FALSE'
-        description: Indicates whether a promotion was applied to a sale.
-        synonyms:
-          - discount_used
-          - sale_applied
-          - promo_used
-          - offer_applied
-          - special_offer
-          - sale_flag
-          - promotion_used
-          - discount_flag
-    time_dimensions:
-      - name: DATE_SALES
-        expr: DATE_SALES
-        data_type: DATE
-        sample_values:
-          - '2022-04-16'
-          - '2022-04-17'
-          - '2022-04-18'
-        description: Date on which the sales transaction occurred.
-        synonyms:
-          - SALES_DATE
-          - TRANSACTION_DATE
-          - PURCHASE_DATE
-          - ORDER_DATE
-          - SALE_TIMESTAMP
-    facts:
-      - name: SALE_ID
-        expr: SALE_ID
-        data_type: NUMBER(38,0)
-        sample_values:
-          - '0'
-          - '1'
-          - '2'
-        description: Unique identifier for each sales transaction.
-        synonyms:
-          - sale_number
-          - transaction_id
-          - order_id
-          - invoice_number
-          - purchase_id
-          - sales_transaction
-          - sale_reference
-          - transaction_reference
-      - name: ARTICLE_ID
-        expr: ARTICLE_ID
-        data_type: NUMBER(38,0)
-        sample_values:
-          - '5'
           - '4'
-          - '7'
-        description: Unique identifier for the article being sold.
+          - '5'
+        description: Unique identifier for structural members in the analysis model, representing different beam, column, or frame elements.
         synonyms:
-          - product_id
-          - item_id
-          - product_number
-          - item_number
-          - article_number
-          - product_code
-          - item_code
-      - name: CUSTOMER_ID
-        expr: CUSTOMER_ID
+          - element_id
+          - beam_id
+          - member_number
+          - structural_member
+          - element_number
+          - member_reference
+          - component_id
+          
+      - name: NODE_ID
+        expr: NODE_ID
         data_type: NUMBER(38,0)
         sample_values:
-          - '3678'
-          - '3031'
-          - '1927'
-        description: Unique identifier for the customer who made the sale.
+          - '190'
+          - '194'
+          - '195'
+          - '347'
+          - '348'
+          - '349'
+        description: Unique identifier for nodes in the structural model, representing connection points or critical locations along structural members.
         synonyms:
-          - client_id
-          - customer_number
-          - account_id
-          - client_number
-          - buyer_id
-          - patron_id
-          - user_id
-      - name: QUANTITY_SOLD
-        expr: QUANTITY_SOLD
-        data_type: NUMBER(38,0)
+          - joint_id
+          - node_number
+          - connection_point
+          - joint_number
+          - vertex_id
+          - node_reference
+          - point_id
+          
+      - name: CASE_ID
+        expr: CASE_ID
+        data_type: VARCHAR(16777216)
         sample_values:
-          - '9'
+          - '1'
           - '2'
+          - '3'
           - '10'
-        description: The total number of units of a product sold in a single transaction.
+          - '11'
+          - '12'
+          - '100'
+          - '200'
+          - '1000'
+        description: Identifier for load cases or load combinations applied in the structural analysis, representing different loading scenarios.
         synonyms:
-          - units_sold
-          - items_sold
-          - quantity_purchased
-          - amount_sold
-          - sales_volume
-          - sold_quantity
-          - number_sold
-      - name: TOTAL_PRICE
-        expr: TOTAL_PRICE
+          - load_case
+          - loading_scenario
+          - case_number
+          - load_combination
+          - analysis_case
+          - loading_condition
+          - case_reference
+          
+      - name: CASE_TYPE
+        expr: CASE_TYPE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - 'BASIC'
+          - 'COMBINATION'
+        description: Type of load case, either BASIC for individual load cases or COMBINATION for combined loading scenarios.
+        synonyms:
+          - load_type
+          - case_category
+          - loading_type
+          - analysis_type
+          - case_classification
+          - load_category
+          
+      - name: MEMBER_NODE_CASE
+        expr: MEMBER_NODE_CASE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '1/194/1'
+          - '1/347/2'
+          - '2/190/100 (C)'
+          - '3/348/1000'
+        description: Original composite identifier combining member, node, and case information for reference and traceability.
+        synonyms:
+          - original_identifier
+          - composite_key
+          - reference_id
+          - full_identifier
+          - analysis_reference
+          - element_case_reference
+
+    facts:
+      - name: ANALYSIS_ID
+        expr: ANALYSIS_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+        description: Unique auto-generated identifier for each analysis record in the database.
+        synonyms:
+          - record_id
+          - analysis_key
+          - primary_key
+          - row_id
+          - analysis_reference
+          
+      - name: S_MAX_MPA
+        expr: S_MAX_MPA
         data_type: FLOAT
         sample_values:
-          - '76500'
-          - '100000'
-          - '10000'
-        description: The total price of a sale, representing the overall amount paid by a customer for a particular transaction.
+          - '4.87'
+          - '9.14'
+          - '17.83'
+          - '24.06'
+        description: Maximum stress value in MegaPascals (MPa) at the specified member/node location for the given load case.
         synonyms:
-          - total_cost
-          - total_amount
-          - sale_amount
-          - total_sale_value
-          - total_revenue
-          - total_invoice_value
-          - total_transaction_value
-    primary_key:
-      columns:
-        - CUSTOMER_ID
-        - ARTICLE_ID
-relationships:
-  - name: customer_join
-    join_type: inner
-    relationship_type: many_to_one
-    left_table: FACT_SALES
-    relationship_columns:
-      - left_column: CUSTOMER_ID
-        right_column: CUSTOMER_ID
-    right_table: DIM_CUSTOMER
-  - name: article_join
-    join_type: inner
-    relationship_type: many_to_one
-    left_table: FACT_SALES
-    relationship_columns:
-      - left_column: ARTICLE_ID
-        right_column: ARTICLE_ID
-    right_table: DIM_ARTICLE
-custom_instructions: Limit answer to sales questions about products. You should not answer questions about product specifications or usage.
+          - maximum_stress
+          - peak_stress
+          - max_stress_value
+          - highest_stress
+          - stress_maximum
+          - maximum_stress_mpa
+          - peak_stress_mpa
+          
+      - name: S_MIN_MPA
+        expr: S_MIN_MPA
+        data_type: FLOAT
+        sample_values:
+          - '-10.39'
+          - '-20.61'
+          - '-12.03'
+          - '-16.24'
+        description: Minimum stress value in MegaPascals (MPa) at the specified member/node location, often representing compressive stress.
+        synonyms:
+          - minimum_stress
+          - lowest_stress
+          - min_stress_value
+          - stress_minimum
+          - minimum_stress_mpa
+          - compressive_stress
+          - negative_stress
+          
+      - name: S_MAX_MY_MPA
+        expr: S_MAX_MY_MPA
+        data_type: FLOAT
+        sample_values:
+          - '5.88'
+          - '11.88'
+          - '14.64'
+          - '20.31'
+        description: Maximum stress due to bending moment about the Y-axis in MegaPascals (MPa).
+        synonyms:
+          - max_moment_y_stress
+          - maximum_my_stress
+          - max_bending_stress_y
+          - peak_moment_stress_y
+          - max_flexural_stress_y
+          - maximum_my_stress_mpa
+          
+      - name: S_MAX_MZ_MPA
+        expr: S_MAX_MZ_MPA
+        data_type: FLOAT
+        sample_values:
+          - '0.86'
+          - '1.47'
+          - '3.42'
+          - '5.84'
+        description: Maximum stress due to bending moment about the Z-axis in MegaPascals (MPa).
+        synonyms:
+          - max_moment_z_stress
+          - maximum_mz_stress
+          - max_bending_stress_z
+          - peak_moment_stress_z
+          - max_flexural_stress_z
+          - maximum_mz_stress_mpa
+          
+      - name: S_MIN_MY_MPA
+        expr: S_MIN_MY_MPA
+        data_type: FLOAT
+        sample_values:
+          - '-5.88'
+          - '-11.88'
+          - '-9.99'
+          - '-13.85'
+        description: Minimum stress due to bending moment about the Y-axis in MegaPascals (MPa).
+        synonyms:
+          - min_moment_y_stress
+          - minimum_my_stress
+          - min_bending_stress_y
+          - minimum_flexural_stress_y
+          - min_my_stress_mpa
+          
+      - name: S_MIN_MZ_MPA
+        expr: S_MIN_MZ_MPA
+        data_type: FLOAT
+        sample_values:
+          - '-2.64'
+          - '-4.52'
+          - '-1.81'
+          - '-2.04'
+        description: Minimum stress due to bending moment about the Z-axis in MegaPascals (MPa).
+        synonyms:
+          - min_moment_z_stress
+          - minimum_mz_stress
+          - min_bending_stress_z
+          - minimum_flexural_stress_z
+          - min_mz_stress_mpa
+          
+      - name: FX_AX_MPA
+        expr: FX_AX_MPA
+        data_type: FLOAT
+        sample_values:
+          - '-1.87'
+          - '-4.21'
+          - '-0.23'
+          - '1.35'
+        description: Axial stress calculated as axial force divided by cross-sectional area in MegaPascals (MPa), representing tension or compression.
+        synonyms:
+          - axial_stress
+          - normal_stress
+          - force_over_area
+          - axial_force_stress
+          - fx_ax_stress
+          - tension_compression_stress
+          - axial_stress_mpa
